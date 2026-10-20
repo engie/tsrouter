@@ -1,0 +1,20 @@
+configuration:
+  auth_key:
+    name: Auth key
+    description: >-
+      Tailscale auth key (tskey-auth-...) or OAuth client secret (tskey-client-...,
+      requires tags). Only used the first time each node joins. Leave empty to
+      approve each node via the login URL printed in the log.
+  tags:
+    name: Tags
+    description: ACL tags to advertise for every node, e.g. tag:printer.
+  verbose:
+    name: Verbose logging
+    description: Include tailscaled's internal logs.
+  proxies:
+    name: Proxies
+    description: >-
+      One tailnet node per entry. hostname is the tailnet name, target is the
+      LAN IP or hostname, ports is a comma-separated list such as
+      "9100,631" or "8080:80" (tailnet:target). Leave ports empty to forward
+      every TCP port.

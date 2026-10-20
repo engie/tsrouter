@@ -1,0 +1,24 @@
+name: Tailscale LAN Proxy
+version: "0.1.0"
+slug: tsrouter
+description: Give LAN devices (printers, etc.) their own Tailscale node and hostname, forwarding TCP to them
+url: https://github.com/engie/tsrouter
+arch:
+  - aarch64
+  - amd64
+init: false
+startup: services
+boot: auto
+options:
+  tags: []
+  verbose: false
+  proxies: []
+schema:
+  auth_key: password?
+  tags:
+    - "match(^tag:[A-Za-z0-9-]+$)"
+  verbose: bool
+  proxies:
+    - hostname: "match(^[A-Za-z0-9]([A-Za-z0-9-]{0,61}[A-Za-z0-9])?$)"
+      target: str
+      ports: str?
