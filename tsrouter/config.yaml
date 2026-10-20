@@ -1,5 +1,5 @@
 name: Tailscale LAN Proxy
-version: "0.1.0"
+version: "0.1.1"
 slug: tsrouter
 description: Give LAN devices (printers, etc.) their own Tailscale node and hostname, forwarding TCP to them
 url: https://github.com/engie/tsrouter

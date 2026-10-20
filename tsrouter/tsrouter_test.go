@@ -155,3 +155,16 @@ func TestForwardDialFailure(t *testing.T) {
 		t.Errorf("expected one dial-error log, got %v", logs)
 	}
 }
+
+func TestOAuthSecret(t *testing.T) {
+	tests := map[string]string{
+		"tskey-client-abc":                                    "tskey-client-abc?ephemeral=false&preauthorized=true",
+		"tskey-client-abc?ephemeral=true":                     "tskey-client-abc?ephemeral=true&preauthorized=true",
+		"tskey-client-abc?preauthorized=false&ephemeral=true": "tskey-client-abc?preauthorized=false&ephemeral=true",
+	}
+	for in, want := range tests {
+		if got := oauthSecret(in); got != want {
+			t.Errorf("oauthSecret(%q) = %q, want %q", in, got, want)
+		}
+	}
+}

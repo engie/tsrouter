@@ -69,7 +69,7 @@ func startNode(ctx context.Context, opts *Options, p *Proxy, dir string) (*tsnet
 		srv.Logf = logf
 	}
 	if strings.HasPrefix(opts.AuthKey, "tskey-client-") {
-		srv.ClientSecret = opts.AuthKey
+		srv.ClientSecret = oauthSecret(opts.AuthKey)
 	} else {
 		srv.AuthKey = opts.AuthKey
 	}
@@ -132,4 +132,23 @@ func describePorts(p *Proxy) string {
 		return "all TCP ports"
 	}
 	return "ports " + p.Ports
+}
+
+// oauthSecret defaults OAuth-minted keys to non-ephemeral and preauthorized.
+// tsnet otherwise mints ephemeral keys, and ephemeral nodes are deleted
+// after going offline, so a long reboot would lose the hostname.
+// Attributes already on the secret (e.g. "?ephemeral=true") are kept.
+func oauthSecret(s string) string {
+	for _, attr := range []string{"ephemeral=false", "preauthorized=true"} {
+		name, _, _ := strings.Cut(attr, "=")
+		if strings.Contains(s, "?"+name+"=") || strings.Contains(s, "&"+name+"=") {
+			continue
+		}
+		if strings.Contains(s, "?") {
+			s += "&" + attr
+		} else {
+			s += "?" + attr
+		}
+	}
+	return s
 }
